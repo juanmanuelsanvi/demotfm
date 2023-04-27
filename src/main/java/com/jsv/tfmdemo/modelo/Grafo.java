@@ -1,9 +1,9 @@
 package com.jsv.tfmdemo.modelo;
 
 import org.gephi.graph.api.*;
-import org.gephi.graph.api.Node;
 import org.gephi.project.api.*;
 import org.openide.util.Lookup;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class Grafo {
 
