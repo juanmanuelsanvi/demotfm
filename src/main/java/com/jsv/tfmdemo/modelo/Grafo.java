@@ -24,9 +24,9 @@ public class Grafo {
     Node n0 = graphModel.factory().newNode("n0");
     n0.setLabel("Node 0");
     Node n1 = graphModel.factory().newNode("n1");
-    //n1.setLabel("Node 1");
+    n1.setLabel("Node 1");
     Node n2 = graphModel.factory().newNode("n2");
-    //n2.setLabel("Node 2");
+    n2.setLabel("Node 2");
 
     //Creo 3 aristas
     Edge e1 = graphModel.factory().newEdge(n1, n2, 0, 1.0, true);
