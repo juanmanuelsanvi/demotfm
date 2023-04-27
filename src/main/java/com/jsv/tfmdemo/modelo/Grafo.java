@@ -1,9 +1,13 @@
 package com.jsv.tfmdemo.modelo;
 
+import org.gephi.graph.api.Node;
+import org.gephi.graph.api.Element;
+import org.gephi.graph.api.GraphModel;
 import org.gephi.graph.api.*;
-import org.gephi.project.api.*;
+import org.gephi.project.api.Project;
+import org.gephi.project.api.ProjectController;
+import org.gephi.project.api.Workspace;
 import org.openide.util.Lookup;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class Grafo {
 
@@ -17,27 +21,27 @@ public class Grafo {
     GraphModel graphModel = Lookup.getDefault().lookup(GraphController.class).getGraphModel(workspace);
     
     // Creo 3 nodos
-    Node nPepe = graphModel.factory().newNode("Pepe");
-    nPepe.setLabel("Node 0");
-    Node nAntonio = graphModel.factory().newNode("Antonio");
-    nAntonio.setLabel("Node 1");
-    Node nAna = graphModel.factory().newNode("Ana");
-    nAna.setLabel("Node 2");
+    Node n0 = graphModel.factory().newNode("n0");
+    n0.setLabel("Node 0");
+    Node n1 = graphModel.factory().newNode("n1");
+    //n1.setLabel("Node 1");
+    Node n2 = graphModel.factory().newNode("n2");
+    //n2.setLabel("Node 2");
 
     //Creo 3 aristas
-    Edge e1 = graphModel.factory().newEdge(nAntonio, nAna, 0, 1.0, true);
-    Edge e2 = graphModel.factory().newEdge(nPepe, nAna, 0, 2.0, true);
-    Edge e3 = graphModel.factory().newEdge(nAna, nPepe, 0, 2.0, true);   //This is e2's mutual edge
+    Edge e1 = graphModel.factory().newEdge(n1, n2, 0, 1.0, true);
+    Edge e2 = graphModel.factory().newEdge(n0, n2, 0, 2.0, true);
+    Edge e3 = graphModel.factory().newEdge(n2, n0, 0, 2.0, true);   //This is e2's mutual edge
 
     //Append as a Directed Graph
     DirectedGraph directedGraph = graphModel.getDirectedGraph();
-    directedGraph.addNode(nPepe);
-    directedGraph.addNode(nAntonio);
-    directedGraph.addNode(nAna);
+    /*directedGraph.addNode(n0);
+    directedGraph.addNode(n1);
+    directedGraph.addNode(n2);
     directedGraph.addEdge(e1);
     directedGraph.addEdge(e2);
     directedGraph.addEdge(e3);
-
+*/
     //Count nodes and edges
     System.out.println("Nodes: " + directedGraph.getNodeCount() + " Edges: " + directedGraph.getEdgeCount());
     //Get a UndirectedGraph now and count edges
