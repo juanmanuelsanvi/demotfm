@@ -26,6 +26,15 @@ public class Grafo {
 	private String fechaActualizacion;
 	private Timestamp fecha;
 	
+	private Integer source;
+	private Integer foro;
+	private Integer asignatura;
+	private Integer numcaracteres;
+	private String fechaEnvio;
+	private Integer target;
+	private GraphModel graphModel;
+	private DirectedGraph directedGraph;
+	
 	public Grafo()
 	{
 		// Inicio un proyecto y un espacio de trabajo
@@ -35,7 +44,7 @@ public class Grafo {
 		Workspace workspace = pc.getCurrentWorkspace();
 
 		// Creo un modelo grafo - existe porque tenemos el workspace
-		GraphModel graphModel = Lookup.getDefault().lookup(GraphController.class).getGraphModel(workspace);
+		graphModel = Lookup.getDefault().lookup(GraphController.class).getGraphModel(workspace);
 
 		// Se crean 3 nodos
 		n0 = graphModel.factory().newNode("n0");
@@ -47,11 +56,14 @@ public class Grafo {
 
 		// Se crean 3 aristas
 		Edge e1 = graphModel.factory().newEdge(n1, n2, 0, 1.0, true);
+		e1.setLabel("e1");
 		Edge e2 = graphModel.factory().newEdge(n0, n2, 0, 2.0, true);
-		Edge e3 = graphModel.factory().newEdge(n2, n0, 0, 2.0, true); // This is e2's mutual edge
+		e1.setLabel("e2");
+		Edge e3 = graphModel.factory().newEdge(n2, n0, 0, 2.0, true); // Arista mutua 0 a 2 y 2 a 0
+		e1.setLabel("e3");
 
 		// Se crea como grafo dirigido
-		DirectedGraph directedGraph = graphModel.getDirectedGraph();
+		 directedGraph = graphModel.getDirectedGraph();
 		directedGraph.addNode(n0);
 		directedGraph.addNode(n1);
 		directedGraph.addNode(n2);
@@ -102,7 +114,8 @@ public class Grafo {
 		Timestamp fecha = new Timestamp(time);
 		fechaActualizacion = fecha.toString();
 		
-		// Añade columnas para atributos de una persona
+		// Añade columnas para atributos de una persona (NODO)
+		// Las columnas son comunes a todos los nodos del grafo
 		graphModel.getNodeTable().addColumn("idenfier", Integer.class);
 		graphModel.getNodeTable().addColumn("usuario", String.class);
 		graphModel.getNodeTable().addColumn("apellido", String.class);
@@ -111,16 +124,72 @@ public class Grafo {
 		graphModel.getNodeTable().addColumn("fecha", String.class);
 		
 		// Establece valores en cada una de las columnas
-		n0.setAttribute("idenfier", id);
-		n0.setAttribute("usuario", usuario);
-		n0.setAttribute("apellido", apellido);
-		n0.setAttribute("nombre", apellido);
-		n0.setAttribute("email", email);
-		n0.setAttribute("fecha", fechaActualizacion);
+		// Como es ya algo de cada grafo concreto, se aplica sobre directedGraph
+		for ( Node n : directedGraph.getNodes()) 
+		{ 		
+			n.setAttribute("idenfier", id);
+			n.setAttribute("usuario", usuario);
+			n.setAttribute("apellido", apellido);
+			n.setAttribute("nombre", apellido);
+			n.setAttribute("email", email);
+			n.setAttribute("fecha", fechaActualizacion);
+			id += 1;
+		}
 		
-        //Lista las columnas de un nodo 
-        for (Column col : graphModel.getNodeTable()) {
-            System.out.println(col.getTitle() + ": " + n0.getAttribute(col) );
-        }	
+		for ( Node n : directedGraph.getNodes()) 
+		{ 	
+			System.out.println("Nodo: " + n.getLabel());
+	        //Lista las columnas de un nodo, el n0 
+	        for (Column col : graphModel.getNodeTable()) {
+	            System.out.println(col.getTitle() + ": " + n.getAttribute(col) );
+	        }
+		}    
+		
+		source = 1;
+		foro = 343;
+		asignatura = 45;
+		numcaracteres = 231;
+		fechaEnvio ="04/05/2023";
+		target = 2;
+		
+		// Añade columnas para atributos de un mensaje (ARISTA)
+		graphModel.getEdgeTable().addColumn("origen", Integer.class);
+		graphModel.getEdgeTable().addColumn("foro", Integer.class);
+		graphModel.getEdgeTable().addColumn("asignatura", Integer.class);
+		graphModel.getEdgeTable().addColumn("numcaracteres", Integer.class);
+		graphModel.getEdgeTable().addColumn("fechaEnvio", String.class);
+		graphModel.getEdgeTable().addColumn("target", Integer.class);     
+	
+		for ( Edge e : directedGraph.getEdges()) 
+		{ 
+			// Establece valores en cada una de las columnas
+			e.setAttribute("origen", source);
+			e.setAttribute("foro", foro);
+			e.setAttribute("asignatura", asignatura);
+			e.setAttribute("numcaracteres", numcaracteres);
+			e.setAttribute("fechaEnvio", fechaEnvio);
+			e.setAttribute("target", target);	
+		}
+		
+		for ( Edge e : directedGraph.getEdges()) 
+		{ 	
+			System.out.println("Edge: " + e.getLabel());
+	        //Lista las columnas de un nodo, el n0 
+	        for (Column col : graphModel.getEdgeTable()) 
+	        {
+	            System.out.println(col.getTitle() + ": " + e.getAttribute(col) );
+	        }
+		}  
+	}
+	
+	public void indicadores()
+	{
+		for (Node s : directedGraph.getNodes()) {
+			int s_index = indicies.get(s);
+			s.setAttribute(ECCENTRICITY, nodeEccentricity[s_index]);
+			s.setAttribute(CLOSENESS, nodeCloseness[s_index]);
+			s.setAttribute(HARMONIC_CLOSENESS, nodeHarmonicCloseness[s_index]);
+			s.setAttribute(BETWEENNESS, nodeBetweenness[s_index]);
+		}
 	}
 }
