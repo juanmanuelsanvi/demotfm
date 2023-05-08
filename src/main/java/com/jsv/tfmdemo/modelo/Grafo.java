@@ -10,6 +10,7 @@ import org.gephi.project.api.ProjectController;
 import org.gephi.project.api.Workspace;
 import org.openide.util.Lookup;
 import com.jsv.tfmdemo.modelo.Arista;
+import com.jsv.tfmdemo.modelo.GraphDistance;
 
 public class Grafo {
 
@@ -34,6 +35,7 @@ public class Grafo {
 	private Integer target;
 	private GraphModel graphModel;
 	private DirectedGraph directedGraph;
+	private GraphDistance grafo;
 	
 	public Grafo()
 	{
@@ -43,6 +45,8 @@ public class Grafo {
 
 		Workspace workspace = pc.getCurrentWorkspace();
 
+		
+		
 		// Creo un modelo grafo - existe porque tenemos el workspace
 		graphModel = Lookup.getDefault().lookup(GraphController.class).getGraphModel(workspace);
 
@@ -71,7 +75,19 @@ public class Grafo {
 		directedGraph.addEdge(e2);
 		directedGraph.addEdge(e3);
 		
-		
+		grafo = new GraphDistance();
+		grafo.execute(graphModel);
+
+		for ( Node n : directedGraph.getNodes()) 
+		{ 	
+			System.out.println("Nodo: " + n.getLabel());
+	        //Lista las columnas de un nodo, el n0 
+	        for (Column col : graphModel.getNodeTable()) {
+	            System.out.println(col.getTitle() + ": " + n.getAttribute(col) );
+	        }
+		}  
+		System.out.println("Informe: " + grafo.getReport());
+		/*
 		// Cuenta nodos y aristas
 		System.out.println("Nodos: " + directedGraph.getNodeCount() + " Aristas: " + directedGraph.getEdgeCount());
 		
@@ -179,17 +195,8 @@ public class Grafo {
 	        {
 	            System.out.println(col.getTitle() + ": " + e.getAttribute(col) );
 	        }
-		}  
+		}  */
 	}
 	
-	public void indicadores()
-	{
-		for (Node s : directedGraph.getNodes()) {
-			int s_index = indicies.get(s);
-			s.setAttribute(ECCENTRICITY, nodeEccentricity[s_index]);
-			s.setAttribute(CLOSENESS, nodeCloseness[s_index]);
-			s.setAttribute(HARMONIC_CLOSENESS, nodeHarmonicCloseness[s_index]);
-			s.setAttribute(BETWEENNESS, nodeBetweenness[s_index]);
-		}
-	}
+
 }
