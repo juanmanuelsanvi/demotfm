@@ -36,6 +36,7 @@ public class Grafo {
 	private GraphModel graphModel;
 	private DirectedGraph directedGraph;
 	private GraphDistance grafo;
+	private Persona per;
 	
 	public Grafo()
 	{
@@ -43,9 +44,7 @@ public class Grafo {
 		pc = Lookup.getDefault().lookup(ProjectController.class);
 		pc.newProject();
 
-		Workspace workspace = pc.getCurrentWorkspace();
-
-		
+		Workspace workspace = pc.getCurrentWorkspace();		
 		
 		// Creo un modelo grafo - existe porque tenemos el workspace
 		graphModel = Lookup.getDefault().lookup(GraphController.class).getGraphModel(workspace);
