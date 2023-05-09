@@ -67,7 +67,7 @@ public class Grafo {
 		e1.setLabel("e3");
 
 		// Se crea como grafo dirigido
-		 directedGraph = graphModel.getDirectedGraph();
+		directedGraph = graphModel.getDirectedGraph();
 		directedGraph.addNode(n0);
 		directedGraph.addNode(n1);
 		directedGraph.addNode(n2);
@@ -75,19 +75,7 @@ public class Grafo {
 		directedGraph.addEdge(e2);
 		directedGraph.addEdge(e3);
 		
-		grafo = new GraphDistance();
-		grafo.execute(graphModel);
-
-		for ( Node n : directedGraph.getNodes()) 
-		{ 	
-			System.out.println("Nodo: " + n.getLabel());
-	        //Lista las columnas de un nodo, el n0 
-	        for (Column col : graphModel.getNodeTable()) {
-	            System.out.println(col.getTitle() + ": " + n.getAttribute(col) );
-	        }
-		}  
-		System.out.println("Informe: " + grafo.getReport());
-		/*
+	
 		// Cuenta nodos y aristas
 		System.out.println("Nodos: " + directedGraph.getNodeCount() + " Aristas: " + directedGraph.getEdgeCount());
 		
@@ -151,7 +139,7 @@ public class Grafo {
 			n.setAttribute("fecha", fechaActualizacion);
 			id += 1;
 		}
-		
+		/*
 		for ( Node n : directedGraph.getNodes()) 
 		{ 	
 			System.out.println("Nodo: " + n.getLabel());
@@ -160,7 +148,7 @@ public class Grafo {
 	            System.out.println(col.getTitle() + ": " + n.getAttribute(col) );
 	        }
 		}    
-		
+		*/
 		source = 1;
 		foro = 343;
 		asignatura = 45;
@@ -186,7 +174,7 @@ public class Grafo {
 			e.setAttribute("fechaEnvio", fechaEnvio);
 			e.setAttribute("target", target);	
 		}
-		
+		/*
 		for ( Edge e : directedGraph.getEdges()) 
 		{ 	
 			System.out.println("Edge: " + e.getLabel());
@@ -195,7 +183,21 @@ public class Grafo {
 	        {
 	            System.out.println(col.getTitle() + ": " + e.getAttribute(col) );
 	        }
-		}  */
+		}  
+		*/
+		grafo = new GraphDistance();
+		grafo.execute(graphModel);
+
+		for ( Node n : directedGraph.getNodes()) 
+		{ 	
+			System.out.println("Nodo: " + n.getLabel());
+	        //Lista las columnas de un nodo, el n0 
+	        for (Column col : graphModel.getNodeTable()) {
+	            System.out.println(col.getTitle() + ": " + n.getAttribute(col) );
+	        }
+		}  
+		System.out.println("Informe: " + grafo.getReport());
+
 	}
 	
 
